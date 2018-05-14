@@ -1,5 +1,4 @@
 from string import Formatter
-
 from cfg.config import VERSION
 
 
