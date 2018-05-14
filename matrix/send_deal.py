@@ -6,7 +6,7 @@ from action import get_action
 if __name__ == '__main__':
 
     # Actions
-    send_deal_action = get_action('send_deal')
+    send_deal_action = get_action('send_deal.cfg')
 
     # Scenario
     sc(
