@@ -1,5 +1,5 @@
 from string import Formatter
-from cfg.config import VERSION
+from config import VERSION
 
 
 def multi(func):

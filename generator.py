@@ -1,5 +1,5 @@
 import operator
-
+import random
 
 def range_generator(start=0, end=10, step=1):
     """Generation behave like range(), continuously increase value of parameter N on step
@@ -86,3 +86,80 @@ def transfer_generator(file):
             params['SecAcc'] = acc.replace('\n', '')
 
             yield params
+
+
+def send_broadcast_generator(start=0, end=10, step=1, max_order=9999):
+    params = {
+        'N': 0,
+        'zN': 0,
+        'Participant': '',
+        'Partition': 1,
+        'Side': '',
+        'Price': '',
+        'Qty': '',
+    }
+
+    for _ in range(start, end, step):
+        # specific condition
+        if params['N'] % max_order == 0:
+            params['Partition'] += 1
+
+        params['N'] += 1
+        params['zN'] = str(params['N']).zfill(4)
+        params['Commodity'] = params['N'] % 1800
+        params['Price'] = random.randrange(3, 100)
+        params['Qty'] = random.randrange(3, 50)
+
+        # buy
+        params['Participant'] = '03'
+        params['Side'] = 'Sell'
+        yield params
+
+        # Sell
+        params['Participant'] = '05'
+        params['Side'] = 'Buy'
+        yield params
+
+
+def verify_allocation_generator(start=0, end=10, step=1):
+    params = {
+        'N': 0,
+        'Side': '',
+    }
+
+    for _ in range(start, end, step):
+        params['N'] += 1
+
+        # Buy
+        params['Side'] = 'Buy'
+        yield params
+
+        # Sell
+        params['Side'] = 'Sell'
+        yield params
+
+
+def send_sese023_generator(start=0, end=10, step=1):
+    params = {
+        'N': 0,
+        'Side': '',
+        'SideType': '',
+        'BIC': '',
+        'SecurityAccount': '',
+    }
+    for _ in range(start, end, step):
+        params['N'] += 1
+
+        # buy
+        params['Side'] = 'Buy'
+        params['SideType'] = 'RECE'
+        params['BIC'] = 'IGTESTAE'
+        params['SecurityAccount'] = '555000018542'
+        yield params
+
+        # Sell
+        params['Side'] = 'Sell'
+        params['SideType'] = 'DELI'
+        params['BIC'] = 'IGTESTAC'
+        params['SecurityAccount'] = '555000018486'
+        yield params

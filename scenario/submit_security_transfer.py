@@ -1,4 +1,5 @@
-from scenario import render, sc
+from scenario import render
+from scenario import sc
 from generator import transfer_generator, range_generator
 from action import get_action
 
@@ -6,8 +7,8 @@ from action import get_action
 if __name__ == '__main__':
 
     # Actions
-    submit_security_transfer_action = get_action('submit_security_transfer.cfg')
-    send_pricing_update = get_action('send_pricing_update.cfg')
+    submit_security_transfer_action = get_action('submit_security_transfer')
+    send_pricing_update = get_action('send_pricing_update')
 
     # Scenario
     sc(
