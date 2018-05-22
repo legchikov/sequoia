@@ -1,4 +1,4 @@
-from scenario import render, sc
+from baseline import render, sc
 from generator import range_generator
 from action import get_action
 
@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     # Scenario
     sc(send_pricing_update, range_generator(start=0, end=10, step=1))
-    # scenario(send_pricing_update, range_generator(start=0, end=10, step=1))
+    # baseline(send_pricing_update, range_generator(start=0, end=10, step=1))
 
     # Matrix
     matrix = render(sc)

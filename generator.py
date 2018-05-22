@@ -1,5 +1,6 @@
-import operator
+import string
 import random
+
 
 def range_generator(start=0, end=10, step=1):
     """Generation behave like range(), continuously increase value of parameter N on step
@@ -163,3 +164,23 @@ def send_sese023_generator(start=0, end=10, step=1):
         params['BIC'] = 'IGTESTAC'
         params['SecurityAccount'] = '555000018486'
         yield params
+
+
+def purge_generator(step, script_name):
+    params = {
+        'ID': id_generator(3),
+        'Step': step,
+        'ScriptName': script_name
+    }
+    yield params
+
+
+def static_generator(isin):
+    params = {
+        'ISIN': isin
+    }
+    yield params
+
+
+def id_generator(size=3, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))

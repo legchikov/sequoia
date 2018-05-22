@@ -1,16 +1,23 @@
 from scenario import render, sc
-from generator import send_broadcast_generator, verify_allocation_generator, send_sese023_generator
+from generator import send_broadcast_generator, \
+    verify_allocation_generator, send_sese023_generator, purge_generator, static_generator
 from action import get_action
 
 
 if __name__ == '__main__':
 
     # Construct the action
+    purge = get_action('ExecuteScript')
+    reset_ts = get_action('ExecuteScript')
+    static = get_action('SetStatic')
     send_broadcast = get_action('SendBroadcast')
     verify_allocation = get_action('VerifyAllocation')
     send023 = get_action('SendSese023')
 
     # Scenario
+    sc(purge, purge_generator('CleanSystem', 'Purge.sh'))
+    sc(reset_ts, purge_generator('ResetTimeSchedules', 'Turnoff.sh'))
+    sc(static, static_generator(1000000))
     sc(send_broadcast, send_broadcast_generator(start=0, end=10, step=1))
     sc(verify_allocation, verify_allocation_generator(start=0, end=10, step=1))
     sc(send023, send_sese023_generator(start=0, end=10, step=1))

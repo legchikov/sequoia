@@ -1,4 +1,4 @@
-from scenario import render, sc
+from baseline import render, sc
 from generator import send_deal_generator
 from action import get_action
 

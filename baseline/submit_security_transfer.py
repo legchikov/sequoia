@@ -1,5 +1,5 @@
-from scenario import render
-from scenario import sc
+from baseline import render
+from baseline import sc
 from generator import transfer_generator, range_generator
 from action import get_action
 
