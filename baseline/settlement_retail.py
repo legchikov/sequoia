@@ -20,9 +20,9 @@ if __name__ == '__main__':
     sc(purge, execute_script_generator('CleanSystem', 'Purge.sh'))
     sc(reset_ts, execute_script_generator('ResetTimeSchedules', 'Turnoff.sh'))
     sc(static, static_generator(1000000))
-    sc(send_broadcast, send_broadcast_generator(start=0, end=1000))
-    sc(verify_allocation, verify_allocation_generator(start=0, end=1000))
-    sc(send023, send_sese023_generator(start=0, end=1000))
+    sc(send_broadcast, send_broadcast_generator(start=0, end=1800))
+    sc(verify_allocation, verify_allocation_generator(start=0, end=1800))
+    sc(send023, send_sese023_generator(start=0, end=1800))
     sc(start_netting, execute_script_generator('Netting', 'Netting.sh'))
     sc(start_processing, execute_script_generator('Processing', 'Processing.sh'))
 
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     matrix = render(sc)
 
     # Output
-    f = open(r'output\settlement_retail_1000.csv', 'w')
+    f = open(r'output\settlement_retail_1800.csv', 'w')
 
     for line in matrix:
         f.write(line + '\n')

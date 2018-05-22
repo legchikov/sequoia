@@ -91,6 +91,7 @@ def transfer_generator(file):
 
 def send_broadcast_generator(start=0, end=10, step=1, max_order=9999):
     params = {
+        'Timeout': 0,
         'N': 0,
         'zN': 0,
         'Participant': '',
@@ -102,14 +103,19 @@ def send_broadcast_generator(start=0, end=10, step=1, max_order=9999):
 
     for _ in range(start, end, step):
         # specific condition
-        if params['N']+1 % max_order == 0:
-            params['Partition'] += 1
-
         params['N'] += 1
         params['zN'] = str(params['N']).zfill(4)
-        params['Commodity'] = params['N'] % 1800
+        params['Commodity'] = (params['N'] % 50) + 1
         params['Price'] = random.randrange(3, 100)
         params['Qty'] = random.randrange(3, 50)
+
+        if params['N'] % max_order == 0:
+            params['Partition'] += 1
+
+        if params['N'] == 1:
+            params['Timeout'] = 300
+        else:
+            params['Timeout'] = 100
 
         # Buy
         params['Participant'] = '03'
