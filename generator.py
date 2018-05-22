@@ -102,7 +102,7 @@ def send_broadcast_generator(start=0, end=10, step=1, max_order=9999):
 
     for _ in range(start, end, step):
         # specific condition
-        if params['N'] % max_order == 0:
+        if params['N']+1 % max_order == 0:
             params['Partition'] += 1
 
         params['N'] += 1
@@ -111,14 +111,14 @@ def send_broadcast_generator(start=0, end=10, step=1, max_order=9999):
         params['Price'] = random.randrange(3, 100)
         params['Qty'] = random.randrange(3, 50)
 
-        # buy
+        # Buy
         params['Participant'] = '03'
-        params['Side'] = 'Sell'
+        params['Side'] = 'Buy'
         yield params
 
         # Sell
         params['Participant'] = '05'
-        params['Side'] = 'Buy'
+        params['Side'] = 'Sell'
         yield params
 
 
@@ -151,22 +151,35 @@ def send_sese023_generator(start=0, end=10, step=1):
     for _ in range(start, end, step):
         params['N'] += 1
 
-        # buy
-        params['Side'] = 'Buy'
+        # Sell
+        params['Side'] = 'Sell'
         params['SideType'] = 'RECE'
         params['BIC'] = 'IGTESTAE'
         params['SecurityAccount'] = '555000018542'
+        params['DepositoryBIC_DELI'] = 'CDPLSGSG'
+        params['Party_DELI'] = 'NCBICNNK'
+        params['DepositoryBIC_RECE'] = ''
+        params['Party_RECE'] = ''
         yield params
 
-        # Sell
-        params['Side'] = 'Sell'
+        # Buy
+        params['Side'] = 'Buy'
         params['SideType'] = 'DELI'
         params['BIC'] = 'IGTESTAC'
         params['SecurityAccount'] = '555000018486'
+
+        params['DepositoryBIC_RECE'] = 'CDPLSGSG'
+        params['Party_RECE'] = 'NCBICNNK'
+        params['DepositoryBIC_DELI'] = ''
+        params['Party_DELI'] = ''
         yield params
 
 
-def purge_generator(step, script_name):
+
+
+
+
+def execute_script_generator(step, script_name):
     params = {
         'ID': id_generator(3),
         'Step': step,
