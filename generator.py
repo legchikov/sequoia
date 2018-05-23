@@ -181,10 +181,6 @@ def send_sese023_generator(start=0, end=10, step=1):
         yield params
 
 
-
-
-
-
 def execute_script_generator(step, script_name):
     params = {
         'ID': id_generator(3),
@@ -194,9 +190,52 @@ def execute_script_generator(step, script_name):
     yield params
 
 
-def static_generator(isin):
+def static_generator(d):
+    yield d
+
+
+def verify_ts_generator(step, ts, status):
     params = {
-        'ISIN': isin
+        'ID': id_generator(3),
+        'Step': step,
+        'Scheduler': ts,
+        'Status': status
+    }
+    yield params
+
+
+def add_securities_generator(start=0, end=10, step=1, count=10):
+    params = {
+        'ID': 0,
+        'N': 0,
+    }
+
+    for _ in range(start, max(end, count), step):
+        params['ID'] += 1
+        params['N'] += 1
+
+        yield params
+
+
+def add_cash_generator(start=0, end=10, step=1):
+    params = {
+        'ID': 0,
+        'Participant': 0,
+    }
+
+    for _ in range(start, end, step):
+        params['ID'] += 1
+        params['Participant'] += 1
+
+        yield params
+
+
+def verify_countdb(step, count, query):
+    params = {
+        'ID': id_generator(3),
+        'Step': step,
+        'Count': count,
+        'Query': query
     }
     yield params
 
