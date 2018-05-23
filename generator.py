@@ -2,6 +2,9 @@ import string
 import random
 
 
+SEED = 10
+
+
 def range_generator(start=0, end=10, step=1):
     """Generation behave like range(), continuously increase value of parameter N on step
     Input:
@@ -248,4 +251,7 @@ def verify_countdb_generator(step, count, query, timeout=10000):
 
 
 def id_generator(size=3, chars=string.ascii_uppercase + string.digits):
+    global SEED
+    random.seed(SEED)
+    SEED += 1
     return ''.join(random.choice(chars) for _ in range(size))
