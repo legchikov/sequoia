@@ -128,9 +128,10 @@ def send_broadcast_generator(start=0, end=10, step=1, max_order=9999, timeout=10
         yield params
 
 
-def verify_allocation_generator(start=0, end=10, step=1):
+def verify_allocation_generator(start=0, end=10, step=1, timeout=1000):
     params = {
         'N': 0,
+        'Timeout': timeout,
         'Side': '',
     }
 
@@ -146,9 +147,10 @@ def verify_allocation_generator(start=0, end=10, step=1):
         yield params
 
 
-def send_sese023_generator(start=0, end=10, step=1):
+def send_sese023_generator(start=0, end=10, step=1, timeout=0):
     params = {
         'N': 0,
+        'Timeout': timeout,
         'Side': '',
         'SideType': '',
         'BIC': '',
@@ -181,10 +183,11 @@ def send_sese023_generator(start=0, end=10, step=1):
         yield params
 
 
-def execute_script_generator(step, script_name):
+def execute_script_generator(step, script_name, timeout=0):
     params = {
         'ID': id_generator(3),
         'Step': step,
+        'Timeout': timeout,
         'ScriptName': script_name
     }
     yield params
@@ -194,19 +197,21 @@ def static_generator(d):
     yield d
 
 
-def verify_ts_generator(step, ts, status):
+def verify_ts_generator(step, scheduler, status, timeout=30000):
     params = {
         'ID': id_generator(3),
         'Step': step,
-        'Scheduler': ts,
+        'Timeout': timeout,
+        'Scheduler': scheduler,
         'Status': status
     }
     yield params
 
 
-def add_securities_generator(start=0, end=10, step=1, count=10):
+def add_securities_generator(start=0, end=10, step=1, count=10, timeout=0):
     params = {
         'ID': 0,
+        'Timeout': timeout,
         'N': 0,
     }
 
@@ -217,9 +222,10 @@ def add_securities_generator(start=0, end=10, step=1, count=10):
         yield params
 
 
-def add_cash_generator(start=0, end=10, step=1):
+def add_cash_generator(start=0, end=10, step=1, timeout=0):
     params = {
         'ID': 0,
+        'Timeout': timeout,
         'Participant': 0,
     }
 
@@ -230,10 +236,11 @@ def add_cash_generator(start=0, end=10, step=1):
         yield params
 
 
-def verify_countdb(step, count, query):
+def verify_countdb(step, count, query, timeout=10000):
     params = {
         'ID': id_generator(3),
         'Step': step,
+        'Timeout': timeout,
         'Count': count,
         'Query': query
     }
