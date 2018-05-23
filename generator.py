@@ -89,7 +89,7 @@ def transfer_generator(file):
             yield params
 
 
-def send_broadcast_generator(start=0, end=10, step=1, max_order=9999):
+def send_broadcast_generator(start=0, end=10, step=1, max_order=9999, timeout=100):
     params = {
         'Timeout': 0,
         'N': 0,
@@ -115,7 +115,7 @@ def send_broadcast_generator(start=0, end=10, step=1, max_order=9999):
         if params['N'] == 1:
             params['Timeout'] = 300
         else:
-            params['Timeout'] = 100
+            params['Timeout'] = timeout
 
         # Buy
         params['Participant'] = '03'
