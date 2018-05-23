@@ -236,7 +236,7 @@ def add_cash_generator(start=0, end=10, step=1, timeout=0):
         yield params
 
 
-def verify_countdb(step, count, query, timeout=10000):
+def verify_countdb_generator(step, count, query, timeout=10000):
     params = {
         'ID': id_generator(3),
         'Step': step,
