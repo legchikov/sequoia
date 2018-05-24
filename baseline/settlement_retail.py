@@ -12,6 +12,7 @@ if __name__ == '__main__':
     count = 100
     participants = 1  # count of pairs
     instruments = 50
+    settlement_cycle = 3
 
     # Construct the action
     exescript = get_action('ExecuteScript')
@@ -29,7 +30,7 @@ if __name__ == '__main__':
     # Scenario
     sc(exescript, execute_script_generator('CleanSystem', 'Purge.sh'))
     sc(exescript, execute_script_generator('ResetTimeSchedules', 'Turnoff.sh'))
-    sc(static, static_generator({'ISIN': 1000000}))
+    sc(static, static_generator({'ISIN': 1000000, 'SettlCycle': settlement_cycle}))
     sc(send_broadcast, send_broadcast_generator(end=count))
     sc(verify_allocation, verify_allocation_generator(end=count))
     sc(send023, send_sese023_generator(end=count))
