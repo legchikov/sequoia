@@ -10,7 +10,7 @@ def multi(func):
         generator = args[1]
 
         if action.name == 'SetStatic':
-            header = action.header + ',' + ','.join(str(x) for x in generator.keys())
+            header = action.header + ',' + ','.join('#'+str(x) for x in generator.keys())
             message = action.template + ',' + ','.join(str(x) for x in generator.values())
 
             matrix.append('')

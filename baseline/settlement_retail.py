@@ -9,10 +9,10 @@ from action import get_action
 if __name__ == '__main__':
 
     # Count of messages
-    count = 2
+    count = 2000
     participants = 1  # count of pairs
     instruments = 50
-    settlement_cycle = 3
+    settlement_cycle = -3
 
     # Construct the action
     exescript = get_action('ExecuteScript')
@@ -31,15 +31,15 @@ if __name__ == '__main__':
     sc(exescript, execute_script_generator('CleanSystem', 'Purge.sh'))
     sc(exescript, execute_script_generator('ResetTimeSchedules', 'Turnoff.sh'))
 
-    sc(static, static_generator({'Prefix': "@{{gen('ggg')}}",
+    sc(static, static_generator({'Prefix': "@{gen('ggg')}",
                                  'ISIN': 1000000,
-                                 'Cycle': settlement_cycle}))
+                                 'SettlCycle': settlement_cycle}))
 
     sc(send_broadcast, send_broadcast_generator(end=count))
     sc(verify_allocation, verify_allocation_generator(end=count))
     sc(send023, send_sese023_generator(end=count))
     sc(add_cash, add_cash_generator(end=participants))
-    sc(add_securities, add_securities_generator(end=instruments))
+    sc(add_securities, add_securities_generator(end=count, instr=instruments))
 
     sc(exescript, execute_script_generator('Netting', 'Netting.sh'))
     sc(verify_ts, verify_ts_generator('VerificationNetting', 'SGXNetting', 'Completed'))

@@ -162,14 +162,14 @@ def verify_ts_generator(step, scheduler, status, timeout=30000):
     yield params
 
 
-def add_securities_generator(start=0, end=10, step=1, count=10, timeout=0):
+def add_securities_generator(start=0, end=10, step=1, instr=10, timeout=0):
     params = {
         'ID': 0,
         'Timeout': timeout,
         'N': 0,
     }
 
-    for _ in range(start, min(end, count), step):
+    for _ in range(start, min(end, instr), step):
         params['ID'] += 1
         params['N'] += 1
 
