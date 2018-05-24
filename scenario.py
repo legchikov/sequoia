@@ -9,19 +9,27 @@ def multi(func):
         action = args[0]
         generator = args[1]
 
-        try:
+        if action.name == 'SetStatic':
+            header = action.header + ',' + ','.join(str(x) for x in generator.keys())
+            message = action.template + ',' + ','.join(str(x) for x in generator.values())
+
             matrix.append('')
-            matrix.append(action.header)
-            for params in generator:
-                check_params(action.template, params.keys())
-                message = func(action, **params)
-                matrix.append(message)
-        except AttributeError as e:
-            print(e)
-        except DoNotMatchError as e:
-            print(e)
-            print(e.unmatched)
-            return
+            matrix.append(header)
+            matrix.append(message)
+        else:
+            try:
+                matrix.append('')
+                matrix.append(action.header)
+                for params in generator:
+                    check_params(action.template, params.keys())
+                    message = func(action, **params)
+                    matrix.append(message)
+            except AttributeError as e:
+                print(e)
+            except DoNotMatchError as e:
+                print(e)
+                print(e.unmatched)
+                return
 
     return inner
 

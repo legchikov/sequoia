@@ -9,7 +9,7 @@ from action import get_action
 if __name__ == '__main__':
 
     # Count of messages
-    count = 100
+    count = 2
     participants = 1  # count of pairs
     instruments = 50
     settlement_cycle = 3
@@ -30,7 +30,11 @@ if __name__ == '__main__':
     # Scenario
     sc(exescript, execute_script_generator('CleanSystem', 'Purge.sh'))
     sc(exescript, execute_script_generator('ResetTimeSchedules', 'Turnoff.sh'))
-    sc(static, static_generator({'ISIN': 1000000, 'SettlCycle': settlement_cycle}))
+
+    sc(static, static_generator({'Prefix': "@{{gen('ggg')}}",
+                                 'ISIN': 1000000,
+                                 'Cycle': settlement_cycle}))
+
     sc(send_broadcast, send_broadcast_generator(end=count))
     sc(verify_allocation, verify_allocation_generator(end=count))
     sc(send023, send_sese023_generator(end=count))

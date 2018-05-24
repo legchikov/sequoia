@@ -3,10 +3,11 @@
 #id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#ScriptDirectory,#ScriptName,#Parameters
 C14,CleanSystem,ExecuteScript,TRUE,,0,,./,Purge.sh,
 
-#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#ScriptDirectory,#ScriptName,#Parameters
-293,ResetTimeSchedules,ExecuteScript,TRUE,,0,,./,Turnoff.sh,
+#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#ScriptDirectory,#ScriptName,#Parameters,ID,Step,Timeout,ScriptName
+{ID},{Step},ExecuteScript,TRUE,,{Timeout},,./,{ScriptName},293,ResetTimeSchedules,0,Turnoff.sh
 
-#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#Prefix,#ISIN,#SettlCycle
+#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#Prefix,ISIN,Cycle
+Static,Static,SetStatic,TRUE,,0,,@{{gen('ggg')}}1000000,3
 
 #id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#MsgType,#CentralModule,#ServerType,#TransactionNbr,#Items,#NamedStruct1,#StructSize1,#TrCode_CountryId,#TrCode_CustomerId,#TrCode_UserId,#Series_Country,#Series_Market,#Series_InstrumentGroup,#Series_Modifier,#Series_Commodity,#Series_ExpirationDate,#Series_StrikePlace,#OrderNumber,#SequenceNumber,#TradeNumber,#DealPrice,#TradeQuantity,#Account_CountryId,#Account_ExCustomer,#Account_AccountId,#Account_Filler3,#CustomerInfo,#BoughtOrSold,#DealSource,#OpenCloseReq,#TradeType,#UserCode_CountryId,#UserCode_CustomerId,#UserCode_UserId,#TradeState,#DealNumber,#ExchInfo_TraderId,#ExchInfo_CPTraderId,#ExchInfo_AmalgCode,#ExchInfo_SettCurrency,#ExchInfo_CPFFlag,#ExchInfo_CustomerInfo,#ClearingDate,#ExecTS_tv_sec,#ExecTS_tv_nsec,#Instance,#Party_CountryId,#Party_ExCustomer,#Party_Filler1,#TradeRepCode,#NamedStruct2,#StructSize2,#SGETradeNumber,#NamedStruct3,#StructSize3,#CorrYieldPrice,#AccruedInterest,#Consideration
 S_DBuy_1,SendDeal,SendBroadcast,TRUE,,300,,CB15,C,B,15,3,BaseAPI,284,ST,03XXX,TRCU1,SGX,Ready,Cash,0,2,0,0,1;1;1;1,2,@{Static.Prefix}0001,60,35,ST,27XXX,1110001,,Buy1,Buy,Auto,No Contra,New,ST,ERXXX,USX21,Active,@{Static.Prefix}0001,EXINF,CP1,0,SGD,Non-CPF,Buy_@{Static.Prefix}0001,"@{format(time(-Static.SettlCycle),'yyyyMMdd')}",36000,0,1,ST,CPAR2,,1,SGEAPI,4,@{Static.Prefix}0001,FixedIncomeAPI,20,0,0,0

@@ -5,7 +5,7 @@ import action
 
 def read(action_name):
     try:
-        with open(os.path.join(config.PATH_ACTIONS, action_name)) as file:
+        with open(os.path.join(config.PATH_ACTIONS, action_name + '.cfg')) as file:
             header = []
             template = []
 
@@ -19,7 +19,7 @@ def read(action_name):
 
             header_str = ','.join(header)
             template_str = ','.join(template)
-            return action.Action(header_str, template_str)
+            return action.Action(action_name, header_str, template_str)
     except FileNotFoundError as e:
         print('[ERROR]: Config file "{}" has not found.'.format(e.filename))
         return

@@ -148,7 +148,7 @@ def execute_script_generator(step, script_name, timeout=0):
 
 
 def static_generator(d):
-    yield d
+    return d
 
 
 def verify_ts_generator(step, scheduler, status, timeout=30000):
@@ -169,7 +169,7 @@ def add_securities_generator(start=0, end=10, step=1, count=10, timeout=0):
         'N': 0,
     }
 
-    for _ in range(start, max(end, count), step):
+    for _ in range(start, min(end, count), step):
         params['ID'] += 1
         params['N'] += 1
 
