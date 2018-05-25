@@ -1,9 +1,7 @@
 from scenario import render, sc
-from generator import send_broadcast_generator, verify_allocation_generator,  \
-    execute_script_generator, static_generator
+from generator import send_broadcast_generator, verify_allocation_generator, execute_script_generator, static_generator
 
 from action import get_action
-
 
 if __name__ == '__main__':
 
@@ -24,8 +22,8 @@ if __name__ == '__main__':
     sc(exescript, 'CleanSystem', execute_script_generator('CleanSystem', 'Purge.sh'))
 
     sc(static, 'Static', static_generator({'Prefix': "@{gen('ggg')}",
-                                 'ISIN': 1000000,
-                                 'SettlCycle': settlement_cycle}))
+                                           'ISIN': 1000000,
+                                           'SettlCycle': settlement_cycle}))
 
     sc(send_broadcast, 'SendDeal', send_broadcast_generator(end=count))
     sc(verify_allocation, 'VerifyAllocation', verify_allocation_generator(end=count))

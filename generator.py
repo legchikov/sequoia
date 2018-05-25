@@ -137,7 +137,7 @@ def send_sese023_generator(start=0, end=10, step=1, timeout=0):
         yield params
 
 
-def execute_script_generator(step, script_name, timeout=0):
+def execute_script_generator(script_name, timeout=0):
     params = {
         'ID': id_generator(3),
         'Timeout': timeout,
@@ -150,7 +150,7 @@ def static_generator(d):
     return d
 
 
-def verify_ts_generator(step, scheduler, status, timeout=30000):
+def verify_ts_generator(scheduler, status, timeout=30000):
     params = {
         'ID': id_generator(3),
         'Timeout': timeout,
@@ -188,7 +188,7 @@ def add_cash_generator(start=0, end=10, step=1, timeout=0):
         yield params
 
 
-def verify_countdb_generator(step, count, query, timeout=10000):
+def verify_countdb_generator(count, query, timeout=10000):
     params = {
         'ID': id_generator(3),
         'Timeout': timeout,

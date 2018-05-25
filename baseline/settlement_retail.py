@@ -5,7 +5,6 @@ from generator import send_broadcast_generator, verify_allocation_generator, sen
 
 from action import get_action
 
-
 if __name__ == '__main__':
 
     # Count of messages
@@ -32,8 +31,8 @@ if __name__ == '__main__':
     sc(exescript, 'ResetTimeSchedules', execute_script_generator('ResetTimeSchedules', 'Turnoff.sh'))
 
     sc(static, 'Static', static_generator({'Prefix': "@{gen('ggg')}",
-                                 'ISIN': 1000000,
-                                 'SettlCycle': settlement_cycle}))
+                                           'ISIN': 1000000,
+                                           'SettlCycle': settlement_cycle}))
 
     sc(send_broadcast, 'SendDeal', send_broadcast_generator(end=count))
     sc(verify_allocation, 'VerifyAllocation', verify_allocation_generator(end=count))
@@ -46,22 +45,19 @@ if __name__ == '__main__':
     sc(exescript, 'Processing', execute_script_generator('Processing', 'Processing.sh'))
     sc(verify_ts, 'VerificationProcessing', verify_ts_generator('VerificationProcessing', 'SGXProcessing', 'Completed'))
 
-    sc(verify_count, 'VerifyCountSI', verify_countdb_generator(step='VerifyCountSI',
-                                              count=count*2,
-                                              query="SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS "
-                                              "WHERE LATEST=1 and SI_STATUS=7 and SI_SUB_STATUS=13 and "
-                                              "REASON_CODE=0 and CREATED_USER='OPEN_API' and "
-                                              "EXTERNAL_REQUEST_ID LIKE 'BIZ@{Static.Prefix}%'"))
+    sc(verify_count, 'VerifyCountSI',
+       verify_countdb_generator(count=count * 2, query="SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS "
+                                                       "WHERE LATEST=1 and SI_STATUS=7 and SI_SUB_STATUS=13 and "
+                                                       "REASON_CODE=0 and CREATED_USER='OPEN_API' and "
+                                                       "EXTERNAL_REQUEST_ID LIKE 'BIZ@{Static.Prefix}%'"))
 
-    sc(verify_count, 'VerifyCountNoSI', verify_countdb_generator(step='VerifyCountNoSI',
-                                              count=0,
-                                              query="SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS "
-                                              "WHERE LATEST=1 and (SI_STATUS<>7 or SI_SUB_STATUS<>13 or REASON_CODE<>0)"))
+    sc(verify_count, 'VerifyCountNoSI',
+       verify_countdb_generator(count=0, query="SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS "
+                                               "WHERE LATEST=1 and (SI_STATUS<>7 or SI_SUB_STATUS<>13 or REASON_CODE<>0)"))
 
-    sc(verify_count, 'VerifyCountNoOptimizedTable', verify_countdb_generator(step='VerifyCountNoOptimizedTable',
-                                              count=0,
-                                              query="SELECT COUNT(*) AS ActualCount FROM ATSD_TAD_OPTIMIZED_SI "
-                                              "WHERE LATEST=1 and (SETTLEMENT_STATUS<>1 or OPTIMIZATION_ALGORITHM<>0)"))
+    sc(verify_count, 'VerifyCountNoOptimizedTable',
+       verify_countdb_generator(count=0, query="SELECT COUNT(*) AS ActualCount FROM ATSD_TAD_OPTIMIZED_SI "
+                                               "WHERE LATEST=1 and (SETTLEMENT_STATUS<>1 or OPTIMIZATION_ALGORITHM<>0)"))
 
     # Matrix
     matrix = render(sc)
