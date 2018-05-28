@@ -44,8 +44,11 @@ def sc(action, **params):
     return action.template.format(**params)
 
 
-def render(fn):
-    return fn.__closure__[1].cell_contents
+def render(fn, store):
+    if store == 'matrix':
+        return fn.__closure__[1].cell_contents
+    elif store == 'steps':
+        return fn.__closure__[2].cell_contents
 
 
 def check_params(action, generator_params):

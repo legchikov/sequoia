@@ -60,12 +60,20 @@ if __name__ == '__main__':
                                                "WHERE LATEST=1 and (SETTLEMENT_STATUS<>1 or OPTIMIZATION_ALGORITHM<>0)"))
 
     # Matrix
-    matrix = render(sc)
+    matrix = render(sc, 'matrix')
+    steps = render(sc, 'steps')
 
     # Output
-    f = open(f'output\settlement_retail_{count}.csv', 'w')
+    f = open(f'output\settlement_retail_baseline.csv', 'w')
 
     for line in matrix:
         f.write(line + '\n')
+        print(line)
+    f.close()
+
+    f = open(f'output\settlement_retail_config.csv', 'w')
+    f.write('Global step,Step kind,Start at,Start at type,Parameter,Ask for continue,Ask if failed,Execute,Comment\n')
+    for line in steps:
+        f.write(line + ',Default,,End of previous step,,1,0,1,' + '\n')
         print(line)
     f.close()
