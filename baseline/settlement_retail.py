@@ -27,8 +27,8 @@ if __name__ == '__main__':
     verify_count = get_action('CountDB')
 
     # Scenario
-    sc(exescript, 'CleanSystem', execute_script_generator('CleanSystem', 'Purge.sh'))
-    sc(exescript, 'ResetTimeSchedules', execute_script_generator('ResetTimeSchedules', 'Turnoff.sh'))
+    sc(exescript, 'CleanSystem', execute_script_generator('Purge.sh'))
+    sc(exescript, 'ResetTimeSchedules', execute_script_generator('Turnoff.sh'))
 
     sc(static, 'Static', static_generator({'Prefix': "@{gen('ggg')}",
                                            'ISIN': 1000000,
@@ -40,10 +40,10 @@ if __name__ == '__main__':
     sc(add_cash, 'AddCashBalance', add_cash_generator(end=participants))
     sc(add_securities, 'AddSecurityBalance', add_securities_generator(end=count, instr=instruments))
 
-    sc(exescript, 'Netting', execute_script_generator('Netting', 'Netting.sh'))
-    sc(verify_ts, 'VerificationNetting', verify_ts_generator('VerificationNetting', 'SGXNetting', 'Completed'))
-    sc(exescript, 'Processing', execute_script_generator('Processing', 'Processing.sh'))
-    sc(verify_ts, 'VerificationProcessing', verify_ts_generator('VerificationProcessing', 'SGXProcessing', 'Completed'))
+    sc(exescript, 'Netting', execute_script_generator('Netting.sh'))
+    sc(verify_ts, 'VerificationNetting', verify_ts_generator('SGXNetting', 'Completed'))
+    sc(exescript, 'Processing', execute_script_generator('Processing.sh'))
+    sc(verify_ts, 'VerificationProcessing', verify_ts_generator('SGXProcessing', 'Completed'))
 
     sc(verify_count, 'VerifyCountSI',
        verify_countdb_generator(count=count * 2, query="SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS "

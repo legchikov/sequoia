@@ -19,7 +19,7 @@ if __name__ == '__main__':
     verify_allocation = get_action('VerifyAllocation')
 
     # Scenario
-    sc(exescript, 'CleanSystem', execute_script_generator('CleanSystem', 'Purge.sh'))
+    sc(exescript, 'CleanSystem', execute_script_generator('Purge.sh'))
 
     sc(static, 'Static', static_generator({'Prefix': "@{gen('ggg')}",
                                            'ISIN': 1000000,

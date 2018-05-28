@@ -137,7 +137,7 @@ def send_sese023_generator(start=0, end=10, step=1, timeout=0):
         yield params
 
 
-def execute_script_generator(script_name, timeout=0):
+def execute_script_generator(script_name, timeout=10):
     params = {
         'ID': id_generator(3),
         'Timeout': timeout,
