@@ -146,7 +146,11 @@ def execute_script_generator(script_name, timeout=10):
     yield params
 
 
-def static_generator(d):
+def static_generator(d, randid=False):
+    if randid:
+        d['ID'] = id_generator(3)
+    else:
+        d['ID'] = 'Static'
     return d
 
 

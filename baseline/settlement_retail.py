@@ -46,8 +46,7 @@ if __name__ == '__main__':
     sc(verify_ts, 'VerificationProcessing', verify_ts_generator('SGXProcessing', 'Completed'))
 
     checksum = render(sc, 'checksum')
-    # print(checksum)
-    sc(static, 'Checksum', static_generator({'Checksum': checksum}))
+    sc(static, 'Checksum', static_generator({'Checksum': checksum}, randid=True))
 
     sc(verify_count, 'VerifyCountSI',
        verify_countdb_generator(count=count * 2, query="SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS "

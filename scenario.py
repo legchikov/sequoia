@@ -20,7 +20,7 @@ def multi(func):
 
         if action.name == 'SetStatic':
             header = action.header + ',' + ','.join('#'+str(x) for x in generator.keys())
-            message = action.template.format(Step=step) + ',' + ','.join(str(x) for x in generator.values())
+            message = action.template.format(**generator, Step=step) + ',' + ','.join(str(x) for x in generator.values())
 
             matrix.append('')
             matrix.append(header)
@@ -58,7 +58,7 @@ def render(fn, store):
     elif store == 'steps':
         return fn.__closure__[3].cell_contents
     elif store == 'checksum':
-        return sum(fn.__closure__[0].cell_contents)
+        return int(sum(fn.__closure__[0].cell_contents))
 
 
 def check_params(action, generator_params):
@@ -85,6 +85,11 @@ class DoNotMatchError(Exception):
 
 def settlement_checksum(params):
     tmp = 0
-    tmp += params['Qty']
+    tmp += params['Qty'] * 2
     tmp += params['Price']
+    tmp += 7  # SI_STATUS
+    tmp += 13  # SI_SUB_STATUS
+    tmp += 6  # PREVIOUS_SI_STATUS
+    tmp += 25  # PREVIOUS_SI_SUB_STATUS
+    tmp += 0.5  # SIDE
     return tmp
