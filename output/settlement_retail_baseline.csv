@@ -682,6 +682,9 @@ G7P,Processing,ExecuteScript,TRUE,,10,,./,Processing.sh,
 #id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#ScheduleId,#Enabled,#Time,#DependencyProfile,#State,#StartTime,#CompletedTime,#ModifiedBy
 NA7,VerificationProcessing,VerifyTimeScheduleInfo,TRUE,,30000,,SGXProcessing,TRUE,,,Completed,,,System
 
+#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#Checksum
+Static,Checksum,SetStatic,TRUE,,0,,14292
+
 #id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#CountOfEntries,#Query
 X44,VerifyCountSI,CountDB,TRUE,,10000,,200,SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS WHERE LATEST=1 and SI_STATUS=7 and SI_SUB_STATUS=13 and REASON_CODE=0 and CREATED_USER='OPEN_API' and EXTERNAL_REQUEST_ID LIKE 'BIZ@{Static.Prefix}%'
 

@@ -34,7 +34,7 @@ if __name__ == '__main__':
                                            'ISIN': 1000000,
                                            'SettlCycle': settlement_cycle}))
 
-    sc(send_broadcast, 'SendDeal', send_broadcast_generator(end=count))
+    sc(send_broadcast, 'SendDeal', send_broadcast_generator(end=count), True)
     sc(verify_allocation, 'VerifyAllocation', verify_allocation_generator(end=count))
     sc(send023, 'SendSi', send_sese023_generator(end=count))
     sc(add_cash, 'AddCashBalance', add_cash_generator(end=participants))
@@ -44,6 +44,10 @@ if __name__ == '__main__':
     sc(verify_ts, 'VerificationNetting', verify_ts_generator('SGXNetting', 'Completed'))
     sc(exescript, 'Processing', execute_script_generator('Processing.sh'))
     sc(verify_ts, 'VerificationProcessing', verify_ts_generator('SGXProcessing', 'Completed'))
+
+    checksum = render(sc, 'checksum')
+    # print(checksum)
+    sc(static, 'Checksum', static_generator({'Checksum': checksum}))
 
     sc(verify_count, 'VerifyCountSI',
        verify_countdb_generator(count=count * 2, query="SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS "
