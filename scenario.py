@@ -12,9 +12,9 @@ def multi(func):
         step = args[1]
         generator = args[2]
         # checksum.append(10)
-        chsum = False
+        chsum = None
         if len(args) == 4:
-            chsum = True
+            chsum = args[3]
 
         steps.append(step)
 
@@ -31,7 +31,7 @@ def multi(func):
                 matrix.append(action.header)
                 for params in generator:
                     if chsum:
-                        checksum.append(settlement_checksum(params))
+                        checksum.append(chsum(params))
                     params['Step'] = step
                     check_params(action.template, params.keys())
                     message = func(action, **params)
@@ -52,7 +52,6 @@ def sc(action, **params):
 
 
 def render(fn, store):
-    # print(fn.__closure__[3].cell_contents)
     if store == 'matrix':
         return fn.__closure__[2].cell_contents
     elif store == 'steps':
@@ -81,15 +80,3 @@ class DoNotMatchError(Exception):
 
         # list of unmatched parameters
         self.unmatched = '[' + ', '.join(unmatched) + ']'
-
-
-def settlement_checksum(params):
-    tmp = 0
-    tmp += params['Qty'] * 2
-    tmp += params['Price']
-    tmp += 7  # SI_STATUS
-    tmp += 13  # SI_SUB_STATUS
-    tmp += 6  # PREVIOUS_SI_STATUS
-    tmp += 25  # PREVIOUS_SI_SUB_STATUS
-    tmp += 0.5  # SIDE
-    return tmp

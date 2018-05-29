@@ -1,9 +1,9 @@
 from scenario import render, sc
-from generator import send_broadcast_generator, verify_allocation_generator, send_sese023_generator, \
-    execute_script_generator, static_generator, verify_ts_generator, add_cash_generator, add_securities_generator, \
-    verify_countdb_generator
-
+from checksum import settlement_checksum
 from action import get_action
+from generators.settlement import *
+from generators.common import execute_script_generator, static_generator, verify_ts_generator, verify_countdb_generator
+
 
 if __name__ == '__main__':
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
                                            'ISIN': 1000000,
                                            'SettlCycle': settlement_cycle}))
 
-    sc(send_broadcast, 'SendDeal', send_broadcast_generator(end=count), True)
+    sc(send_broadcast, 'SendDeal', send_broadcast_generator(end=count), settlement_checksum)
     sc(verify_allocation, 'VerifyAllocation', verify_allocation_generator(end=count))
     sc(send023, 'SendSi', send_sese023_generator(end=count))
     sc(add_cash, 'AddCashBalance', add_cash_generator(end=participants))
