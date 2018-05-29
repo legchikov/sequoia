@@ -1,7 +1,7 @@
 from scenario import render, sc
 from checksum import settlement_checksum
 from action import get_action
-from generators.settlement import *
+import generators.settlement as g
 from generators.common import execute_script_generator, static_generator, verify_ts_generator, verify_countdb_generator
 
 
@@ -34,11 +34,11 @@ if __name__ == '__main__':
                                            'ISIN': 1000000,
                                            'SettlCycle': settlement_cycle}))
 
-    sc(send_broadcast, 'SendDeal', send_broadcast_generator(end=count), settlement_checksum)
-    sc(verify_allocation, 'VerifyAllocation', verify_allocation_generator(end=count))
-    sc(send023, 'SendSi', send_sese023_generator(end=count))
-    sc(add_cash, 'AddCashBalance', add_cash_generator(end=participants))
-    sc(add_securities, 'AddSecurityBalance', add_securities_generator(end=count, instr=instruments))
+    sc(send_broadcast, 'SendDeal', g.send_broadcast_generator(end=count), settlement_checksum)
+    sc(verify_allocation, 'VerifyAllocation', g.verify_allocation_generator(end=count))
+    sc(send023, 'SendSi', g.send_sese023_generator(end=count))
+    sc(add_cash, 'AddCashBalance', g.add_cash_generator(end=participants))
+    sc(add_securities, 'AddSecurityBalance', g.add_securities_generator(end=count, instr=instruments))
 
     sc(exescript, 'Netting', execute_script_generator('Netting.sh'))
     sc(verify_ts, 'VerificationNetting', verify_ts_generator('SGXNetting', 'Completed'))
