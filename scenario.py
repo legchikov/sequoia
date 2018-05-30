@@ -1,5 +1,5 @@
 from string import Formatter
-from config import VERSION
+from config import VERSION, PATH_BASELINES, PATH_CONFIGS
 
 
 def multi(func):
@@ -11,10 +11,9 @@ def multi(func):
         action = args[0]
         step = args[1]
         generator = args[2]
-        # checksum.append(10)
-        chsum = None
+        chksum = None
         if len(args) == 4:
-            chsum = args[3]
+            chksum = args[3]
 
         steps.append(step)
 
@@ -30,8 +29,8 @@ def multi(func):
                 matrix.append('')
                 matrix.append(action.header)
                 for params in generator:
-                    if chsum:
-                        checksum.append(chsum(params))
+                    if chksum:
+                        checksum.append(chksum(params))
                     params['Step'] = step
                     check_params(action.template, params.keys())
                     message = func(action, **params)
@@ -80,3 +79,21 @@ class DoNotMatchError(Exception):
 
         # list of unmatched parameters
         self.unmatched = '[' + ', '.join(unmatched) + ']'
+
+
+def push(name, data, type):
+    import os
+
+    if type == 'baseline':
+        filename = os.path.join(PATH_BASELINES, name + '_' + type + '.csv')
+        with open(filename, 'w') as fout:
+            fout.write("\n".join(data))
+        print('File {} was successfully written'.format(filename))
+
+    elif type == 'config':
+        filename = os.path.join(PATH_CONFIGS, name + '_' + type + '.cfg')
+        with open(filename, 'w') as fout:
+            fout.write('Global step,Step kind,Start at,Start at type,Parameter,Ask for continue,Ask if failed,Execute,Comment\n')
+            for line in data:
+                fout.write(line + ',Default,,End of previous step,,1,0,1,' + '\n')
+        print('File {} was successfully written'.format(filename))
