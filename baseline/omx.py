@@ -1,11 +1,12 @@
-from scenario import render, sc
-from generator import send_broadcast_generator, verify_allocation_generator, execute_script_generator, static_generator
-
+from scenario import render, sc, push
 from action import get_action
+from generators.common import execute_script_generator, static_generator
+import generators.settlement as gnr
 
 if __name__ == '__main__':
 
-    # Count of messages
+    # Baseline properties
+    name = 'omx'
     count = 100
     participants = 1  # count of pairs
     instruments = 50
@@ -25,24 +26,13 @@ if __name__ == '__main__':
                                            'ISIN': 1000000,
                                            'SettlCycle': settlement_cycle}))
 
-    sc(send_broadcast, 'SendDeal', send_broadcast_generator(end=count))
-    sc(verify_allocation, 'VerifyAllocation', verify_allocation_generator(end=count))
+    sc(send_broadcast, 'SendDeal', gnr.send_broadcast_generator(end=count))
+    sc(verify_allocation, 'VerifyAllocation', gnr.verify_allocation_generator(end=count))
 
     # Matrix
     matrix = render(sc, 'matrix')
-    steps = render(sc, 'steps')
+    scheduler_config = render(sc, 'scheduler_config')
 
-    # Output
-    f = open(f'output\omx_baseline.csv', 'w')
-
-    for line in matrix:
-        f.write(line + '\n')
-        print(line)
-    f.close()
-
-    f = open(f'output\omx_config.csv', 'w')
-    f.write('Global step,Step kind,Start at,Start at type,Parameter,Ask for continue,Ask if failed,Execute,Comment\n')
-    for line in steps:
-        f.write(line + ',Default,,End of previous step,,1,0,1,' + '\n')
-        print(line)
-    f.close()
+    # Write to file
+    push(name, matrix, 'matrix')
+    push(name, scheduler_config, 'scheduler_config')
