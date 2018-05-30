@@ -1,13 +1,14 @@
-from scenario import render, sc
-from generator import send_broadcast_generator, verify_allocation_generator, send_sese023_generator, \
-    execute_script_generator, static_generator, verify_ts_generator, add_cash_generator, add_securities_generator, \
-    verify_countdb_generator
-
+from scenario import render, sc, push
+from checksum import settlement_checksum
 from action import get_action
+import generators.settlement as gnr
+from generators.common import execute_script_generator, static_generator, verify_ts_generator, verify_countdb_generator
+
 
 if __name__ == '__main__':
 
-    # Count of messages
+    # Baseline properties
+    name = 'settlement_retail'
     count = 100
     participants = 1  # count of pairs
     instruments = 50
@@ -34,16 +35,19 @@ if __name__ == '__main__':
                                            'ISIN': 1000000,
                                            'SettlCycle': settlement_cycle}))
 
-    sc(send_broadcast, 'SendDeal', send_broadcast_generator(end=count))
-    sc(verify_allocation, 'VerifyAllocation', verify_allocation_generator(end=count))
-    sc(send023, 'SendSi', send_sese023_generator(end=count))
-    sc(add_cash, 'AddCashBalance', add_cash_generator(end=participants))
-    sc(add_securities, 'AddSecurityBalance', add_securities_generator(end=count, instr=instruments))
+    sc(send_broadcast, 'SendDeal', gnr.send_broadcast_generator(end=count), settlement_checksum)
+    sc(verify_allocation, 'VerifyAllocation', gnr.verify_allocation_generator(end=count))
+    sc(send023, 'SendSi', gnr.send_sese023_generator(end=count))
+    sc(add_cash, 'AddCashBalance', gnr.add_cash_generator(end=participants))
+    sc(add_securities, 'AddSecurityBalance', gnr.add_securities_generator(end=count, instr=instruments))
 
     sc(exescript, 'Netting', execute_script_generator('Netting.sh'))
     sc(verify_ts, 'VerificationNetting', verify_ts_generator('SGXNetting', 'Completed'))
     sc(exescript, 'Processing', execute_script_generator('Processing.sh'))
     sc(verify_ts, 'VerificationProcessing', verify_ts_generator('SGXProcessing', 'Completed'))
+
+    checksum = render(sc, 'checksum')
+    sc(static, 'Checksum', static_generator({'Checksum': checksum}, randid=True))
 
     sc(verify_count, 'VerifyCountSI',
        verify_countdb_generator(count=count * 2, query="SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS "
@@ -64,16 +68,5 @@ if __name__ == '__main__':
     steps = render(sc, 'steps')
 
     # Output
-    f = open(f'output\settlement_retail_baseline.csv', 'w')
-
-    for line in matrix:
-        f.write(line + '\n')
-        print(line)
-    f.close()
-
-    f = open(f'output\settlement_retail_config.csv', 'w')
-    f.write('Global step,Step kind,Start at,Start at type,Parameter,Ask for continue,Ask if failed,Execute,Comment\n')
-    for line in steps:
-        f.write(line + ',Default,,End of previous step,,1,0,1,' + '\n')
-        print(line)
-    f.close()
+    push(name, matrix, 'baseline')
+    push(name, steps, 'config')
