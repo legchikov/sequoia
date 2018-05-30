@@ -3,10 +3,11 @@ from action import get_action
 from generators.common import execute_script_generator, static_generator
 import generators.settlement as gnr
 
+
 if __name__ == '__main__':
 
     # Baseline properties
-    name = 'omx'
+    name = 'openapi'
     count = 100
     participants = 1  # count of pairs
     instruments = 50
@@ -18,6 +19,7 @@ if __name__ == '__main__':
 
     send_broadcast = get_action('SendBroadcast')
     verify_allocation = get_action('VerifyAllocation')
+    send023 = get_action('SendSese023')
 
     # Scenario
     sc(exescript, 'CleanSystem', execute_script_generator('Purge.sh'))
@@ -28,6 +30,7 @@ if __name__ == '__main__':
 
     sc(send_broadcast, 'SendDeal', gnr.send_broadcast_generator(end=count))
     sc(verify_allocation, 'VerifyAllocation', gnr.verify_allocation_generator(end=count))
+    sc(send023, 'SendSi', gnr.send_sese023_generator(end=count))
 
     # Matrix
     matrix = render(sc, 'matrix')

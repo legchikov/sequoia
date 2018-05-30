@@ -1,8 +1,8 @@
 from scenario import render, sc, push
-from checksum import settlement_checksum
 from action import get_action
-import generators.settlement as gnr
+from checksum import settlement_checksum
 from generators.common import execute_script_generator, static_generator, verify_ts_generator, verify_countdb_generator
+import generators.settlement as gnr
 
 
 if __name__ == '__main__':
@@ -65,8 +65,8 @@ if __name__ == '__main__':
 
     # Matrix
     matrix = render(sc, 'matrix')
-    steps = render(sc, 'steps')
+    scheduler_config = render(sc, 'scheduler_config')
 
-    # Output
-    push(name, matrix, 'baseline')
-    push(name, steps, 'config')
+    # Write to file
+    push(name, matrix, 'matrix')
+    push(name, scheduler_config, 'scheduler_config')
