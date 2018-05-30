@@ -1,5 +1,0 @@
-Global step,Step kind,Start at,Start at type,Parameter,Ask for continue,Ask if failed,Execute,Comment
-CleanSystem,Default,,End of previous step,,1,0,1,
-Static,Default,,End of previous step,,1,0,1,
-SendDeal,Default,,End of previous step,,1,0,1,
-VerifyAllocation,Default,,End of previous step,,1,0,1,
