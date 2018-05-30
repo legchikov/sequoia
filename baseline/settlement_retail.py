@@ -12,7 +12,7 @@ if __name__ == '__main__':
     count = 100
     participants = 1  # count of pairs
     instruments = 50
-    settlement_cycle = -3
+    settlement_cycle = -2
 
     # Construct the action
     exescript = get_action('ExecuteScript')
