@@ -35,7 +35,7 @@ class Scenario:
                 mes = action.template.format(**params)
                 if chkfn is not None:
                     self.checksum.append(chkfn(params))
-                self.matchparams(action, params)
+                self._matchparams(action, params)
                 self.matrix.append(mes)
 
         except AttributeError as e:
@@ -54,7 +54,7 @@ class Scenario:
             id = id_generator(3)
 
         try:
-            header = '#id,#Step,#Action,#Execute,#TestCase,#Timeout,#Comment'
+            header = '#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment'
             message = '{ID},{Step},SetStatic,TRUE,,0,'.format(ID=id, Step=step)
 
             for k, v in args.items():
@@ -87,10 +87,10 @@ class Scenario:
             if view:
                 print(data)
             else:
-                print('File {} was successfully written\n'.format(filename))
+                print('\nFile {} was successfully written\n'.format(filename))
 
     def _matchparams(self, action, generator_params):
-        action_params = self.get_action_params(action.template)
+        action_params = self._get_action_params(action.template)
         diff = set(action_params) - set(generator_params.keys())
 
         if diff:

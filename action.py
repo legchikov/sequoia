@@ -44,6 +44,7 @@ def make_action(action_name):
 
         print('{}.cfg was created.'.format(action_name))
 
+
 def _make_action(action_name, head, mess):
     header = head.replace('"', '').split(',')
     message = mess
@@ -59,6 +60,8 @@ def _make_action(action_name, head, mess):
                 file.write('{pair[0]:{max}} : {pair[1]}\n'.format(pair=p, max=max_length))
 
         print('{}.cfg was created.'.format(action_name))
+
+
 def make_from_file(action_name, file_name):
     header = ''
     message = []
@@ -90,7 +93,10 @@ def make_from_all_file(filename):
 
     with open(filename) as infile:
         for line in infile:
-            if line.startswith('#'):
+            line = line.replace('\n', '')
+            if line.startswith(','):
+                pass
+            elif line.startswith('#'):
                 start_action = True
                 header = line
             elif start_action:
@@ -101,16 +107,20 @@ def make_from_all_file(filename):
 
             if header and message:
                 lst = message.split(',')
-                action_name = str(lst[2]) + '.cfg'
+                action_name = str(lst[2])
 
                 from os import listdir
                 from os.path import isfile, join
                 onlyfiles = [f for f in listdir(r'C:\Users\dmitry.legchikov\Documents\GitHub\sequoia\actions') if isfile(join(r'C:\Users\dmitry.legchikov\Documents\GitHub\sequoia\actions', f))]
-                if action_name not in onlyfiles:
+                # print(header)
+                # print(message)
+                # print(onlyfiles)
+                if action_name + '.cfg' not in onlyfiles:
                     _make_action(action_name, header, message)
-                    print('{} was created'.format(action_name))
-                else:
-                    print('fail')
+                    # print('{} was created'.format(action_name))
+                # else:
+                #     print('fail')
+
 
 def _screening(s):
     """Screening '{' and '}' so that the format() function will work correctly with parameters"""
@@ -165,7 +175,7 @@ if __name__ == '__main__':
     elif mode == 'make_from_file':
         filename = input('Enter full the file path:\n')
         make_from_file(action, filename)
-    elif mode =='makeall':
+    elif mode == 'makeall':
         make_from_all_file(r'C:\Users\dmitry.legchikov\Documents\GitHub\sequoia\matrixes\CA_bl13_for_20_instr_without_purge.csv')
     else:
         print('incorrect mode')

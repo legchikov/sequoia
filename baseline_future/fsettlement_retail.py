@@ -1,7 +1,7 @@
 from scenario_future import Scenario
 
 from checksum import settlement_checksum
-from generators.common import execute_script_generator, verify_ts_generator, id
+from generators.common import execute_script_generator, verify_ts_generator
 import generators.settlement as gnr
 
 
