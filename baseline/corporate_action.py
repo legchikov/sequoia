@@ -25,8 +25,8 @@ if __name__ == '__main__':
     sc.add_step('AddSecurityPositionCA', 'CreateSecurityBalances', range_generator(1, count))
     sc.add_step('AddRepeatingGroupCA', 'Create_CADiaryEntry', range_generator(1, 2))
     sc.add_step('CreateCADiaryEntry', 'Create_CADiaryEntry', range_generator(1, 2))
-    sc.add_step('VerifyCADiaryEntry', 'VerifyCADiaryEntry', range_generator(1, 2))
-    sc.add_step('VerifyCAOption', 'VerifyCAOption', range_generator(1, 2))
+    sc.add_step('VerifyCADiaryEntry', 'VerifyCADiaryEntry', range_generator(1, 2, timeout=10000))
+    sc.add_step('VerifyCAOption', 'VerifyCAOption', range_generator(1, 2, timeout=10000))
 
     sc.add_step('ExecuteScript', 'RC_Trigger', execute_script_generator('turn_on.sh', parameters='TS_REC_CAPTURE'))
     sc.add_step('VerifyTimeScheduleInfo', 'VerificationRC', verify_ts_generator('TS_REC_CAPTURE', 'Completed'))

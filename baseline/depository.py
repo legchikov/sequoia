@@ -1,5 +1,6 @@
 from scenario_future import Scenario
 from generators.common import execute_script_generator, verify_ts_generator, range_generator
+import generators.settlement as settlgnr
 import generators.depository as gnr
 
 
@@ -7,6 +8,7 @@ if __name__ == '__main__':
 
     # Baseline properties
     count = 1000
+    settlement_cycle = -3
 
     # Scenario
     sc = Scenario('depository')
@@ -17,7 +19,8 @@ if __name__ == '__main__':
     sc.add_step('ExecuteScript', 'ResetTimeSchedules',
                 execute_script_generator('turn_off.sh', parameters=schedulers))
 
-    sc.add_static_step('InitStatic', False, Instr="INSTR_0@{gen('ggg')}")
+    sc.add_static_step('InitStatic', False, Instr="INSTR_0@{gen('ggg')}", Prefix="@{gen('ggg')}",
+                       ISIN=1000000, SettlCycle=settlement_cycle)
 
     sc.add_step('SubmitSecurityDepositDB', 'SubmitSecurityDeposit', execute_script_generator(''))
     sc.add_step('VerifySecurityDeposit', 'VerifySecurityDeposit', execute_script_generator(''))
@@ -30,8 +33,15 @@ if __name__ == '__main__':
     sc.add_step('VerifyTimeScheduleInfo', 'VerifySGSProcessing',
                 verify_ts_generator('SGSProcessing', 'Completed'))
 
-    sc.add_step('VerifySecurityPositionsDepository', 'VerifyAddFreeBalance',
+    sc.add_step('VerifySecurityPositionsDepository', 'VerifyFreeBalance',
                 gnr.verify_secpositions_generator(balance=count, timeout=10000))
+
+    # Settlement part
+
+    sc.add_step('SendBroadcast', 'SendDeal', settlgnr.send_broadcast_generator(end=count))
+    sc.add_step('VerifyAllocation', 'VerifyAllocation', settlgnr.verify_allocation_generator(end=count))
+    sc.add_step('SendSese023', 'SendSi', settlgnr.send_sese023_generator(end=count))
+    sc.add_step('SendCashBalanceTransactionDB', 'AddCashBalance', settlgnr.add_cash_generator(end=participants))
 
     sc.push('matrix', view=True)
     sc.push('config')
