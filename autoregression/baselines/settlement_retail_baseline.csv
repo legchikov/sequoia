@@ -6,8 +6,8 @@ C14,CleanSystem,ExecuteScript,TRUE,,10,,./,Purge.sh,
 #id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#ScriptDirectory,#ScriptName,#Parameters
 293,ResetTimeSchedules,ExecuteScript,TRUE,,10,,./,Turnoff.sh,
 
-#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#Prefix,#ISIN,#SettlCycle,#ID
-Static,Static,SetStatic,TRUE,,0,,@{gen('ggg')},1000000,-2,Static
+#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#Prefix,#ISIN,#SettlCycle
+Static,InitStatic,SetStatic,TRUE,,0,,@{gen('ggg')},1000000,-2
 
 #id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#MsgType,#CentralModule,#ServerType,#TransactionNbr,#Items,#NamedStruct1,#StructSize1,#TrCode_CountryId,#TrCode_CustomerId,#TrCode_UserId,#Series_Country,#Series_Market,#Series_InstrumentGroup,#Series_Modifier,#Series_Commodity,#Series_ExpirationDate,#Series_StrikePlace,#OrderNumber,#SequenceNumber,#TradeNumber,#DealPrice,#TradeQuantity,#Account_CountryId,#Account_ExCustomer,#Account_AccountId,#Account_Filler3,#CustomerInfo,#BoughtOrSold,#DealSource,#OpenCloseReq,#TradeType,#UserCode_CountryId,#UserCode_CustomerId,#UserCode_UserId,#TradeState,#DealNumber,#ExchInfo_TraderId,#ExchInfo_CPTraderId,#ExchInfo_AmalgCode,#ExchInfo_SettCurrency,#ExchInfo_CPFFlag,#ExchInfo_CustomerInfo,#ClearingDate,#ExecTS_tv_sec,#ExecTS_tv_nsec,#Instance,#Party_CountryId,#Party_ExCustomer,#Party_Filler1,#TradeRepCode,#NamedStruct2,#StructSize2,#SGETradeNumber,#NamedStruct3,#StructSize3,#CorrYieldPrice,#AccruedInterest,#Consideration
 S_DBuy_1,SendDeal,SendBroadcast,TRUE,,300,,CB15,C,B,15,3,BaseAPI,284,ST,03XXX,TRCU1,SGX,Ready,Cash,0,2,0,0,1;1;1;1,2,@{Static.Prefix}0001,60,35,ST,27XXX,1110001,,Buy1,Buy,Auto,No Contra,New,ST,ERXXX,USX21,Active,@{Static.Prefix}0001,EXINF,CP1,0,SGD,Non-CPF,Buy_@{Static.Prefix}0001,"@{format(time(Static.SettlCycle),'yyyyMMdd')}",36000,0,1,ST,CPAR2,,1,SGEAPI,4,@{Static.Prefix}0001,FixedIncomeAPI,20,0,0,0
@@ -682,14 +682,8 @@ G7P,Processing,ExecuteScript,TRUE,,10,,./,Processing.sh,
 #id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#ScheduleId,#Enabled,#Time,#DependencyProfile,#State,#StartTime,#CompletedTime,#ModifiedBy
 NA7,VerificationProcessing,VerifyTimeScheduleInfo,TRUE,,30000,,SGXProcessing,TRUE,,,Completed,,,System
 
-#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#Checksum,#ID
-X44,Checksum,SetStatic,TRUE,,0,,29456,X44
+#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#Checksum
+X44,Checksum,SetStatic,TRUE,,0,,29456
 
 #id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#CountOfEntries,#Query
-70T,VerifyCountSI,CountDB,TRUE,,10000,,200,SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS WHERE LATEST=1 and SI_STATUS=7 and SI_SUB_STATUS=13 and REASON_CODE=0 and CREATED_USER='OPEN_API' and EXTERNAL_REQUEST_ID LIKE 'BIZ@{Static.Prefix}%'
-
-#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#CountOfEntries,#Query
-LH2,VerifyCountNoSI,CountDB,TRUE,,10000,,0,SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS WHERE LATEST=1 and (SI_STATUS<>7 or SI_SUB_STATUS<>13 or REASON_CODE<>0)
-
-#id,#GlobalStep,#Action,#Execute,#TestCase,#Timeout,#Comment,#CountOfEntries,#Query
-C7H,VerifyCountNoOptimizedTable,CountDB,TRUE,,10000,,0,SELECT COUNT(*) AS ActualCount FROM ATSD_TAD_OPTIMIZED_SI WHERE LATEST=1 and (SETTLEMENT_STATUS<>1 or OPTIMIZATION_ALGORITHM<>0)
+70T,VerifyCountSI,SetStatic,TRUE,,0,,100,SELECT COUNT(*) AS ActualCount FROM ATSD_MOB_SETTLEMENT_INS WHERE LATEST=1 and SI_STATUS=7 and SI_SUB_STATUS=13 and REASON_CODE=0 and CREATED_USER='OPEN_API' and EXTERNAL_REQUEST_ID LIKE 'BIZ@{Static.Prefix}%'

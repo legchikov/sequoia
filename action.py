@@ -45,6 +45,23 @@ def make_action(action_name):
         print('{}.cfg was created.'.format(action_name))
 
 
+def _make_action(action_name, head, mess):
+    header = head.replace('"', '').split(',')
+    message = mess
+    message = _screening(message)
+    message = _split(message)
+
+    with open('actions/{}.cfg'.format(action_name), 'w') as file:
+        max_length = max(len(h) for h in header)
+        for p in zip(header, message):
+            if len(p[0]) == 0 and len(p[1]) == 0:
+                pass
+            else:
+                file.write('{pair[0]:{max}} : {pair[1]}\n'.format(pair=p, max=max_length))
+
+        print('{}.cfg was created.'.format(action_name))
+
+
 def make_from_file(action_name, file_name):
     header = ''
     message = []
@@ -66,6 +83,43 @@ def make_from_file(action_name, file_name):
                     outfile.write('{pair[0]:{max}} : {pair[1]}\n'.format(pair=p, max=max_length))
 
             print('{}.cfg was created.'.format(action_name))
+
+
+def make_from_all_file(filename):
+
+    start_action = True
+    header = ''
+    message = ''
+
+    with open(filename) as infile:
+        for line in infile:
+            line = line.replace('\n', '')
+            if line.startswith(','):
+                pass
+            elif line.startswith('#'):
+                start_action = True
+                header = line
+            elif start_action:
+                message = line
+            else:
+                header = ''
+                message = ''
+
+            if header and message:
+                lst = message.split(',')
+                action_name = str(lst[2])
+
+                from os import listdir
+                from os.path import isfile, join
+                onlyfiles = [f for f in listdir(r'C:\Users\dmitry.legchikov\Documents\GitHub\sequoia\actions') if isfile(join(r'C:\Users\dmitry.legchikov\Documents\GitHub\sequoia\actions', f))]
+                # print(header)
+                # print(message)
+                # print(onlyfiles)
+                if action_name + '.cfg' not in onlyfiles:
+                    _make_action(action_name, header, message)
+                    # print('{} was created'.format(action_name))
+                # else:
+                #     print('fail')
 
 
 def _screening(s):
@@ -108,7 +162,8 @@ def _split(s):
 if __name__ == '__main__':
     # :TODO: interface via ParseArguments
     # mode = sys.argv[0]
-    mode = 'make'
+    # mode = 'make'
+    mode = 'makeall'
     # mode = 'read'
     # mode = 'make_from_file'
     action = input('Enter action:\n')
@@ -120,5 +175,7 @@ if __name__ == '__main__':
     elif mode == 'make_from_file':
         filename = input('Enter full the file path:\n')
         make_from_file(action, filename)
+    elif mode == 'makeall':
+        make_from_all_file(r'C:\Users\dmitry.legchikov\Documents\GitHub\sequoia\matrixes\CA_bl13_for_20_instr_without_purge.csv')
     else:
         print('incorrect mode')

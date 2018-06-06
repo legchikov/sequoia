@@ -82,22 +82,4 @@ class DoNotMatchError(Exception):
         self.unmatched = '[' + ', '.join(unmatched) + ']'
 
 
-def push(name, data, type):
-    import os
-
-    if type == 'matrix':
-        path = PATH_BASELINES
-        name += '_baseline.csv'
-    elif type == 'scheduler_config':
-        path = PATH_CONFIGS
-        name += '_config.cfg'
-    else:
-        path = PATH_OUTPUT
-        print('Invalid type')
-
-    filename = os.path.join(path, name)
-    with open(filename, 'w') as fout:
-        fout.write("\n".join(data))
-
-    print('File {} was successfully written'.format(filename))
 
