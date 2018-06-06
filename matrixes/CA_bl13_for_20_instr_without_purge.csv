@@ -1,7 +1,4 @@
 #id,#GlobalStep,#Action,#Execute,#TestCase,#timeout,#Comment,#ScriptDirectory,#ScriptName,#Parameters,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-CS,CleanSystem,ExecuteScript,TRUE,,0,,./,Purge.sh,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-#id,#GlobalStep,#Action,#Execute,#TestCase,#timeout,#Comment,#ScriptDirectory,#ScriptName,#Parameters,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 R_TS,ResetTimeSchedules,ExecuteScript,TRUE,,0,,./,Turnoff.sh,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #id,#GlobalStep,#Action,#Execute,#TestCase,#timeout,#Comment,#TestCase,#Instr,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
