@@ -1,17 +1,12 @@
 from scenario_future import Scenario
-
-from checksum import settlement_checksum
-from generators.common import execute_script_generator, verify_ts_generator
-import generators.settlement as gnr
+from generators.common import execute_script_generator, verify_ts_generator, range_generator
+import generators.depository as gnr
 
 
 if __name__ == '__main__':
 
     # Baseline properties
-    count = 100
-    participants = 1  # count of pairs
-    instruments = 50
-    settlement_cycle = -2
+    count = 1000
 
     # Scenario
     sc = Scenario('depository')
@@ -22,6 +17,21 @@ if __name__ == '__main__':
     sc.add_step('ExecuteScript', 'ResetTimeSchedules',
                 execute_script_generator('turn_off.sh', parameters=schedulers))
 
-    sc.add_static_step('InitStatic', False, Prefix="@{gen('ggg')}", ISIN=1000000, SettlCycle=settlement_cycle)
+    sc.add_static_step('InitStatic', False, Instr="INSTR_0@{gen('ggg')}")
 
-    sc.add_step('SendBroadcast', 'SendDeal', gnr.send_broadcast_generator(end=count), settlement_checksum)
+    sc.add_step('SubmitSecurityDepositDB', 'SubmitSecurityDeposit', execute_script_generator(''))
+    sc.add_step('VerifySecurityDeposit', 'VerifySecurityDeposit', execute_script_generator(''))
+
+    sc.add_step('SubmitSecurityTransferDB', 'SubmitSecurityTransfer', range_generator(1, count+1))
+    sc.add_step('VerifySecurityTransfer', 'VerifySecurityTransfer', range_generator(1, count+1))
+
+    sc.add_step('ExecuteScript', 'SGSProcessing',
+                execute_script_generator('turn_on.sh', parameters='SGSProcessing'))
+    sc.add_step('VerifyTimeScheduleInfo', 'VerifySGSProcessing',
+                verify_ts_generator('SGSProcessing', 'Completed'))
+
+    sc.add_step('VerifySecurityPositionsDepository', 'VerifyAddFreeBalance',
+                gnr.verify_secpositions_generator(balance=count, timeout=10000))
+
+    sc.push('matrix', view=True)
+    sc.push('config')

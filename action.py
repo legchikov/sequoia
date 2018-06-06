@@ -162,8 +162,8 @@ def _split(s):
 if __name__ == '__main__':
     # :TODO: interface via ParseArguments
     # mode = sys.argv[0]
-    # mode = 'make'
-    mode = 'makeall'
+    mode = 'make'
+    # mode = 'makeall'
     # mode = 'read'
     # mode = 'make_from_file'
     action = input('Enter action:\n')
