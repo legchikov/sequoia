@@ -45,21 +45,28 @@ def make_action(action_name):
         print('{}.cfg was created.'.format(action_name))
 
 
-def _make_action(action_name, head, mess):
-    header = head.replace('"', '').split(',')
-    message = mess
+def make_action_json(action_name):
+    header = input('Enter header:\n').replace('"', '').split(',')
+    message = input('Enter message:\n')
     message = _screening(message)
     message = _split(message)
+    jsonmessage = dict()
 
-    with open('actions/{}.cfg'.format(action_name), 'w') as file:
+    import json
+    import yaml
+    with open('actions_json/{}.yaml'.format(action_name), 'w') as file:
         max_length = max(len(h) for h in header)
         for p in zip(header, message):
             if len(p[0]) == 0 and len(p[1]) == 0:
                 pass
             else:
-                file.write('{pair[0]:{max}} : {pair[1]}\n'.format(pair=p, max=max_length))
+                jsonmessage[p[0]] = str(p[1])
 
-        print('{}.cfg was created.'.format(action_name))
+        # json.dump(jsonmessage, file, indent=4)
+        yaml.dump(jsonmessage, file, default_flow_style=False)
+        # file.write(simplejson.dumps(simplejson.loads(jsonmessage), indent=4, sort_keys=True))
+
+        print('{}.json was created.'.format(action_name))
 
 
 def make_from_file(action_name, file_name):
@@ -86,7 +93,6 @@ def make_from_file(action_name, file_name):
 
 
 def make_from_all_file(filename):
-
     start_action = True
     header = ''
     message = ''
@@ -120,6 +126,23 @@ def make_from_all_file(filename):
                     # print('{} was created'.format(action_name))
                 # else:
                 #     print('fail')
+
+
+def _make_action(action_name, head, mess):
+    header = head.replace('"', '').split(',')
+    message = mess
+    message = _screening(message)
+    message = _split(message)
+
+    with open('actions/{}.cfg'.format(action_name), 'w') as file:
+        max_length = max(len(h) for h in header)
+        for p in zip(header, message):
+            if len(p[0]) == 0 and len(p[1]) == 0:
+                pass
+            else:
+                file.write('{pair[0]:{max}} : {pair[1]}\n'.format(pair=p, max=max_length))
+
+        print('{}.cfg was created.'.format(action_name))
 
 
 def _screening(s):
@@ -162,7 +185,8 @@ def _split(s):
 if __name__ == '__main__':
     # :TODO: interface via ParseArguments
     # mode = sys.argv[0]
-    mode = 'make'
+    # mode = 'make'
+    mode = 'makejson'
     # mode = 'makeall'
     # mode = 'read'
     # mode = 'make_from_file'
@@ -177,5 +201,7 @@ if __name__ == '__main__':
         make_from_file(action, filename)
     elif mode == 'makeall':
         make_from_all_file(r'C:\Users\dmitry.legchikov\Documents\GitHub\sequoia\matrixes\CA_bl13_for_20_instr_without_purge.csv')
+    elif mode == 'makejson':
+        make_action_json(action)
     else:
         print('incorrect mode')

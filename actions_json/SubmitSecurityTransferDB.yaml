@@ -1,0 +1,27 @@
+'#Action': SubmitSecurityTransferDB
+'#Batch ID': '3456'
+'#Comment': ''
+'#Depo Trans Status': '1'
+'#Depo Transfer Type': SGS Allocation Transfer
+'#Dest Reference': ''
+'#Desti Sec Balance Type': '0'
+'#Destination_Security_Acc_ID': '555000017720'
+'#Entering User ID': WEB
+'#Execute': 'TRUE'
+'#GlobalStep': SubmitSecurityTransfer
+'#Instrument_ID': '@{{instrumentId(Static.Instr)}}'
+'#Intended Transfer Date': '"@{{format(time(0),''yyyy/MM/dd'')}}"'
+'#Participant ID': ''
+'#Pledge Request Initiator Type': '2'
+'#Pledge Request Source': '0'
+'#Receiving Participant': ''
+'#Remark': AAA
+'#Request Initiator Side': '0'
+'#Source Reference': ''
+'#Source Sec Balance Type': '0'
+'#Source_Security_Account_ID': '@{{S_D_1.Securities_Account_ID}}'
+'#TestCase': ''
+'#Transaction Quantity': '1'
+'#Transfer Reference': ''
+'#id': S_TN_1
+'#timeout': '10'
