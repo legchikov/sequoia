@@ -7,7 +7,8 @@ import generators.depository as gnr
 if __name__ == '__main__':
 
     # Baseline properties
-    count = 1000
+    count = 10
+    participants = 1
     settlement_cycle = -3
 
     # Scenario
@@ -38,10 +39,15 @@ if __name__ == '__main__':
 
     # Settlement part
 
-    sc.add_step('SendBroadcast', 'SendDeal', settlgnr.send_broadcast_generator(end=count))
-    sc.add_step('VerifyAllocation', 'VerifyAllocation', settlgnr.verify_allocation_generator(end=count))
-    sc.add_step('SendSese023', 'SendSi', settlgnr.send_sese023_generator(end=count))
+    sc.add_step('SendBroadcast', 'SendDeal', settlgnr.send_broadcast_generator(end=1))
+    sc.add_step('VerifyAllocation', 'VerifyAllocation', settlgnr.verify_allocation_generator(end=1))
+    sc.add_step('SendSese023', 'SendSi', settlgnr.send_sese023_generator(end=1, buyacc='@{VBalance.PositionAccountID}'))
     sc.add_step('SendCashBalanceTransactionDB', 'AddCashBalance', settlgnr.add_cash_generator(end=participants))
+
+    sc.add_step('ExecuteScript', 'Netting', execute_script_generator('Netting.sh'))
+    sc.add_step('VerifyTimeScheduleInfo', 'VerificationNetting', verify_ts_generator('SGXNetting', 'Completed'))
+    sc.add_step('ExecuteScript', 'Processing', execute_script_generator('Processing.sh'))
+    sc.add_step('VerifyTimeScheduleInfo', 'VerificationProcessing', verify_ts_generator('SGXProcessing', 'Completed'))
 
     sc.push('matrix', view=True)
     sc.push('config')

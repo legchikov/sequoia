@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     sc.add_step('SendBroadcast', 'SendDeal', gnr.send_broadcast_generator(end=count), settlement_checksum)
     sc.add_step('VerifyAllocation', 'VerifyAllocation', gnr.verify_allocation_generator(end=count))
-    sc.add_step('SendSese023', 'SendSi', gnr.send_sese023_generator(end=count))
+    sc.add_step('SendSese023', 'SendSi', gnr.send_sese023_generator(end=count, buyacc='555000018486'))
     sc.add_step('SendCashBalanceTransactionDB', 'AddCashBalance', gnr.add_cash_generator(end=participants))
     sc.add_step('AddSecurityPosition', 'AddSecurityBalance', gnr.add_securities_generator(end=count, instr=instruments))
 

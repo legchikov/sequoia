@@ -59,7 +59,7 @@ def verify_allocation_generator(start=0, end=10, step=1, timeout=1000):
         yield params
 
 
-def send_sese023_generator(start=0, end=10, step=1, timeout=0):
+def send_sese023_generator(start=0, end=10, step=1, buyacc='555000018486', timeout=0):
     params = {
         'N': 0,
         'Timeout': timeout,
@@ -86,7 +86,7 @@ def send_sese023_generator(start=0, end=10, step=1, timeout=0):
         params['Side'] = 'Buy'
         params['SideType'] = 'DELI'
         params['BIC'] = 'IGTESTAC'
-        params['SecurityAccount'] = '555000018486'
+        params['SecurityAccount'] = buyacc
 
         params['DepositoryBIC_RECE'] = 'CDPLSGSG'
         params['Party_RECE'] = 'NCBICNNK'
