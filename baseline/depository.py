@@ -23,6 +23,7 @@ if __name__ == '__main__':
     sc.add_static_step('InitStatic', False, Instr="INSTR_0@{gen('ggg')}", Prefix="@{gen('ggg')}",
                        ISIN=1000000, SettlCycle=settlement_cycle)
 
+    # Depository
     sc.add_step('SubmitSecurityDepositDB', 'SubmitSecurityDeposit', execute_script_generator(''))
     sc.add_step('VerifySecurityDeposit', 'VerifySecurityDeposit', execute_script_generator(''))
 
@@ -37,9 +38,14 @@ if __name__ == '__main__':
     sc.add_step('VerifySecurityPositionsDepository', 'VerifyFreeBalance',
                 gnr.verify_secpositions_generator(balance=count, timeout=10000))
 
-    # Settlement part
+    # Clearing account transfer
+    sc.add_step('SubmitSecurityTransferDBPool', 'SendPoolTransfer',
+                gnr.verify_secpositions_generator(balance=count))
+    sc.add_step('VerifySecurityPositionsPool', 'VerifyPoolTransfer',
+                gnr.verify_secpositions_generator(balance=count, timeout=10000))
 
-    sc.add_step('SendBroadcast', 'SendDeal', settlgnr.send_broadcast_generator(end=1))
+    # Settlement
+    sc.add_step('SendBroadcast', 'SendDeal', settlgnr.send_broadcast_generator(end=1, qty=count))
     sc.add_step('VerifyAllocation', 'VerifyAllocation', settlgnr.verify_allocation_generator(end=1))
     sc.add_step('SendSese023', 'SendSi', settlgnr.send_sese023_generator(end=1, buyacc='@{VBalance.PositionAccountID}'))
     sc.add_step('SendCashBalanceTransactionDB', 'AddCashBalance', settlgnr.add_cash_generator(end=participants))

@@ -185,8 +185,8 @@ def _split(s):
 if __name__ == '__main__':
     # :TODO: interface via ParseArguments
     # mode = sys.argv[0]
-    # mode = 'make'
-    mode = 'makejson'
+    mode = 'make'
+    # mode = 'makejson'
     # mode = 'makeall'
     # mode = 'read'
     # mode = 'make_from_file'

@@ -1,7 +1,7 @@
 import random
 
 
-def send_broadcast_generator(start=0, end=10, step=1, max_order=9999, timeout=100):
+def send_broadcast_generator(start=0, end=10, step=1, qty=0, max_order=9999, timeout=100):
     params = {
         'Timeout': 0,
         'N': 0,
@@ -19,7 +19,10 @@ def send_broadcast_generator(start=0, end=10, step=1, max_order=9999, timeout=10
         params['zN'] = str(params['N']).zfill(4)
         params['Commodity'] = (params['N'] % 50) + 1
         params['Price'] = random.randrange(3, 100)
-        params['Qty'] = random.randrange(3, 50)
+        if qty == 0:
+            params['Qty'] = random.randrange(3, 50)
+        else:
+            params['Qty'] = qty
 
         if params['N'] % max_order == 0:
             params['Partition'] += 1
