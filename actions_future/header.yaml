@@ -1,0 +1,7 @@
+'#id': {Prefix}_{ID}
+'#GlobalStep': {Step}
+'#Action': {Action}
+'#Execute': {Execute}
+'#TestCase': ''
+'#Timeout': {Timeout}
+'#Comment': ''

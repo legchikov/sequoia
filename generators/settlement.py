@@ -1,7 +1,7 @@
 import random
 
 
-def send_broadcast_generator(start=0, end=10, step=1, max_order=9999, timeout=100):
+def send_broadcast_generator(start=0, end=10, step=1, qty=0, max_order=9999, timeout=100):
     params = {
         'Timeout': 0,
         'N': 0,
@@ -19,7 +19,10 @@ def send_broadcast_generator(start=0, end=10, step=1, max_order=9999, timeout=10
         params['zN'] = str(params['N']).zfill(4)
         params['Commodity'] = (params['N'] % 50) + 1
         params['Price'] = random.randrange(3, 100)
-        params['Qty'] = random.randrange(3, 50)
+        if qty == 0:
+            params['Qty'] = random.randrange(3, 50)
+        else:
+            params['Qty'] = qty
 
         if params['N'] % max_order == 0:
             params['Partition'] += 1
@@ -59,7 +62,7 @@ def verify_allocation_generator(start=0, end=10, step=1, timeout=1000):
         yield params
 
 
-def send_sese023_generator(start=0, end=10, step=1, timeout=0):
+def send_sese023_generator(start=0, end=10, step=1, buyacc='555000018486', timeout=0):
     params = {
         'N': 0,
         'Timeout': timeout,
@@ -86,7 +89,7 @@ def send_sese023_generator(start=0, end=10, step=1, timeout=0):
         params['Side'] = 'Buy'
         params['SideType'] = 'DELI'
         params['BIC'] = 'IGTESTAC'
-        params['SecurityAccount'] = '555000018486'
+        params['SecurityAccount'] = buyacc
 
         params['DepositoryBIC_RECE'] = 'CDPLSGSG'
         params['Party_RECE'] = 'NCBICNNK'
