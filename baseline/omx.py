@@ -18,7 +18,7 @@ if __name__ == '__main__':
     sc.add_step('ExecuteScript', 'CleanSystem', execute_script_generator('Purge.sh'))
     sc.add_static_step('InitStatic', False, Prefix="@{gen('ggg')}", ISIN=1000000, SettlCycle=settlement_cycle)
 
-    sc.add_step('SendBroadcast', 'SendDeal', gnr.send_broadcast_generator(end=count), settlement_checksum)
+    sc.add_step('SendBroadcast', 'SendDeal', gnr.send_broadcast_generator(stop=count), settlement_checksum)
     sc.add_step('VerifyAllocation', 'VerifyAllocation', gnr.verify_allocation_generator(end=count))
 
     sc.push('matrix', view=True)

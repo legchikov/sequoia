@@ -1,7 +1,8 @@
 import random
 
 
-def send_broadcast_generator(start=0, end=10, step=1, qty=0, max_order=9999, timeout=100):
+def send_broadcast_generator(start=0, stop=10, step=1, qty=0, commodity=0, price=0,
+                             max_order=9999, timeout=100):
     params = {
         'Timeout': 0,
         'N': 0,
@@ -13,12 +14,21 @@ def send_broadcast_generator(start=0, end=10, step=1, qty=0, max_order=9999, tim
         'Qty': '',
     }
 
-    for _ in range(start, end, step):
+    for _ in range(start, stop, step):
         # specific condition
         params['N'] += 1
         params['zN'] = str(params['N']).zfill(4)
-        params['Commodity'] = (params['N'] % 50) + 1
-        params['Price'] = random.randrange(3, 100)
+
+        if commodity == 0:
+            params['Commodity'] = (params['N'] % 50) + 1
+        else:
+            params['Commodity'] = commodity
+
+        if price == 0:
+            params['Price'] = random.randrange(3, 100)
+        else:
+            params['Price'] = price
+
         if qty == 0:
             params['Qty'] = random.randrange(3, 50)
         else:
@@ -62,7 +72,7 @@ def verify_allocation_generator(start=0, end=10, step=1, timeout=1000):
         yield params
 
 
-def send_sese023_generator(start=0, end=10, step=1, buyacc='555000018486', timeout=0):
+def send_sese023_generator(start=0, end=10, step=1, sellacc='555000018542', buyacc='555000018486', timeout=0):
     params = {
         'N': 0,
         'Timeout': timeout,
@@ -78,7 +88,7 @@ def send_sese023_generator(start=0, end=10, step=1, buyacc='555000018486', timeo
         params['Side'] = 'Sell'
         params['SideType'] = 'RECE'
         params['BIC'] = 'IGTESTAE'
-        params['SecurityAccount'] = '555000018542'
+        params['SecurityAccount'] = sellacc
         params['DepositoryBIC_DELI'] = 'CDPLSGSG'
         params['Party_DELI'] = 'NCBICNNK'
         params['DepositoryBIC_RECE'] = ''

@@ -6,7 +6,7 @@ import generators.corporate_action as gnr
 if __name__ == '__main__':
 
     # Baseline properties
-    count = 1001
+    count = 50
 
     # Scenario
     sc = Scenario('corporate_action')
@@ -22,41 +22,41 @@ if __name__ == '__main__':
     # sc.add_static_step('InitStatic', False, Instr="INSTR_0@{(gen('ggg')%20)+1}")
     sc.add_static_step('InitStatic', False, Instr="INSTR_015")
 
-    sc.add_step('AddSecurityPositionCA', 'CreateSecurityBalances', range_generator(1, count))
-    sc.add_step('AddRepeatingGroupCA', 'Create_CADiaryEntry', range_generator(1, 2))
-    sc.add_step('CreateCADiaryEntry', 'Create_CADiaryEntry', range_generator(1, 2))
-    sc.add_step('VerifyCADiaryEntry', 'VerifyCADiaryEntry', range_generator(1, 2, timeout=10000))
-    sc.add_step('VerifyCAOption', 'VerifyCAOption', range_generator(1, 2, timeout=10000))
+    sc.add_step('AddSecurityPositionCA', 'CreateSecurityBalances', range_generator(range(count)))
+    sc.add_step('AddRepeatingGroupCA', 'Create_CADiaryEntry', range_generator(range(1)))
+    sc.add_step('CreateCADiaryEntry', 'Create_CADiaryEntry', range_generator(range(1)))
+    sc.add_step('VerifyCADiaryEntry', 'VerifyCADiaryEntry', range_generator(range(1), timeout=10000))
+    sc.add_step('VerifyCAOption', 'VerifyCAOption', range_generator(range(1), timeout=10000))
 
     sc.add_step('ExecuteScript', 'RC_Trigger', execute_script_generator('turn_on.sh', parameters='TS_REC_CAPTURE'))
     sc.add_step('VerifyTimeScheduleInfo', 'VerificationRC', verify_ts_generator('TS_REC_CAPTURE', 'Completed'))
 
     sc.add_step('ExecuteScript', 'EC_Trigger', execute_script_generator('turn_on.sh', parameters='TS_ENT_COMP'))
     sc.add_step('VerifyTimeScheduleInfo', 'VerificationEC', verify_ts_generator('TS_ENT_COMP', 'Completed'))
-    sc.add_step('VerifyCAEntitlements', 'VerifyCAEntitlements', gnr.verify_entitlements_generator(1, count, status='0'))
+    sc.add_step('VerifyCAEntitlements', 'VerifyCAEntitlements', gnr.verify_entitlements_generator(range(count), status='0'))
 
-    sc.add_step('AddSecurityPositionCA2', 'AddSecurityBalance', range_generator(1, 2))
+    sc.add_step('AddSecurityPositionCA2', 'AddSecurityBalance', range_generator(range(1)))
 
     sc.add_step('ExecuteScript', 'REMIND_Trigger',
                 execute_script_generator('turn_on.sh', parameters='TS_ISS_PAY_REMIND_SECU'))
     sc.add_step('VerifyTimeScheduleInfo', 'VerificationREMIND',
                 verify_ts_generator('TS_ISS_PAY_REMIND_SECU', 'Completed'))
     sc.add_step('VerifyCAEntitlements', 'VerifyCAEntitlementsAfterREMIND',
-                gnr.verify_entitlements_generator(1, count, status='0'))
+                gnr.verify_entitlements_generator(range(count), status='0'))
 
     sc.add_step('ExecuteScript', 'PAY_REC_Trigger',
                 execute_script_generator('turn_on.sh', parameters='TS_ISS_PAY_RECEIPT_SECU'))
     sc.add_step('VerifyTimeScheduleInfo', 'VerificationPAY_REC',
                 verify_ts_generator('TS_ISS_PAY_RECEIPT_SECU', 'Completed'))
     sc.add_step('VerifyCAEntitlements', 'VerifyCAEntitlementsAfterPAY_REC',
-                gnr.verify_entitlements_generator(1, count, status='Pending Settlement'))
+                gnr.verify_entitlements_generator(range(count), status='Pending Settlement'))
 
     sc.add_step('ExecuteScript', 'PAY_DIC_Trigger',
                 execute_script_generator('turn_on.sh', parameters='TS_INV_PAY_DIST_SECU'))
     sc.add_step('VerifyTimeScheduleInfo', 'VerificationPAY_DIC',
                 verify_ts_generator('TS_INV_PAY_DIST_SECU', 'Completed'))
     sc.add_step('VerifyCAEntitlements', 'VerifyCAEntitlementsAfterPAY_DIC',
-                gnr.verify_entitlements_generator(1, count, status='Complete'))
+                gnr.verify_entitlements_generator(range(count), status='Complete'))
 
     sc.push('matrix', view=True)
     sc.push('config')

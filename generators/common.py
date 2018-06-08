@@ -4,11 +4,11 @@ import random
 SEED = 10
 
 
-def range_generator(start=0, end=10, step=1, timeout=100):
+def range_generator(stop, start=0, step=1, timeout=100):
     """Generation behave like range(), continuously increase value of parameter N on step
     Input:
     :param start:
-    :param end:
+    :param stop:
     :param step:
     :param timeout:
 
@@ -16,21 +16,18 @@ def range_generator(start=0, end=10, step=1, timeout=100):
     :param ID:
     """
 
-    # init params
     params = {
         "ID": 0,
         "Timeout": timeout
     }
 
-    # generation
-    for _ in range(start, end, step):
-        # next
+    for _ in range(start, stop , step):
         params['ID'] += 1
 
         yield params
 
 
-def execute_script_generator(script_name, parameters='', timeout=10):
+def execute_script_generator(script_name='', parameters='', timeout=10):
     if isinstance(parameters, (list, tuple)) is False:
         parameters = [parameters]
     for p in parameters:
