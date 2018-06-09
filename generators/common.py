@@ -21,7 +21,7 @@ def range_generator(stop, start=0, step=1, timeout=100):
         "Timeout": timeout
     }
 
-    for _ in range(start, stop , step):
+    for _ in range(start, stop, step):
         params['ID'] += 1
 
         yield params

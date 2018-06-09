@@ -72,7 +72,7 @@ def verify_allocation_generator(start=0, end=10, step=1, timeout=1000):
         yield params
 
 
-def send_sese023_generator(start=0, end=10, step=1, sellacc='555000018542', buyacc='555000018486', timeout=0):
+def send_sese023_generator(start=0, stop=10, step=1, sellacc='555000018542', buyacc='555000018486', timeout=0):
     params = {
         'N': 0,
         'Timeout': timeout,
@@ -81,7 +81,7 @@ def send_sese023_generator(start=0, end=10, step=1, sellacc='555000018542', buya
         'BIC': '',
         'SecurityAccount': '',
     }
-    for _ in range(start, end, step):
+    for _ in range(start, stop, step):
         params['N'] += 1
 
         # Sell
@@ -108,28 +108,26 @@ def send_sese023_generator(start=0, end=10, step=1, sellacc='555000018542', buya
         yield params
 
 
-def add_securities_generator(start=0, end=10, step=1, instr=10, timeout=0):
+def add_securities_generator(stop, start=0, step=1, instr=10, timeout=0):
     params = {
         'ID': 0,
-        'Timeout': timeout,
-        'N': 0,
+        'Timeout': timeout
     }
 
-    for _ in range(start, min(end, instr), step):
+    for _ in range(start, min(stop, instr), step):
         params['ID'] += 1
-        params['N'] += 1
 
         yield params
 
 
-def add_cash_generator(start=0, end=10, step=1, timeout=0):
+def add_cash_generator(start=0, stop=10, step=1, timeout=0):
     params = {
         'ID': 0,
         'Timeout': timeout,
         'Participant': 0,
     }
 
-    for _ in range(start, end, step):
+    for _ in range(start, stop, step):
         params['ID'] += 1
         params['Participant'] += 1
 

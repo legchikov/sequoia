@@ -90,11 +90,11 @@ if __name__ == '__main__':
                                                   commodity='@{Static.Instr.substring(7)}'))
 
     sc.add_step('VerifyAllocation', 'VerifyAllocation', settlgnr.verify_allocation_generator(end=count_settl))
-    sc.add_step('SendSese023', 'SendSi', settlgnr.send_sese023_generator(end=count_settl,
+    sc.add_step('SendSese023', 'SendSi', settlgnr.send_sese023_generator(stop=count_settl,
                                                                          sellacc='@{V_pool_1.PositionAccountID}',
                                                                          buyacc='555000018486'))
 
-    sc.add_step('SendCashBalanceTransactionDB', 'AddCashBalance', settlgnr.add_cash_generator(end=participants))
+    sc.add_step('SendCashBalanceTransactionDB', 'AddCashBalance', settlgnr.add_cash_generator(stop=participants))
 
     sc.add_step('ExecuteScript', 'Netting', execute_script_generator('Netting.sh'))
     sc.add_step('VerifyTimeScheduleInfo', 'VerificationNetting', verify_ts_generator('SGXNetting', 'Completed'))
